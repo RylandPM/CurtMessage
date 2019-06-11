@@ -1,68 +1,115 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Curt Message App.com/curt?name=curt
 
-## Available Scripts
+## frontend
 
-In the project directory, you can run:
+### dependencies
 
-### `npm start`
+- axios
+- react-reduxt
+- redux
+- react-router-dom (BrowserRouter)
+- react-icons/fa
+- http-proxy-middleware
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### file-structure
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+- src/
 
-### `npm test`
+  - components/
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+    - Header/ - Header.js - Header.css
+      -Profile/ - Profile.js - Profile.css
+    - MessageDisplay
+      - CreateMessage.js
+      - MessageDisplay.js
+      - MessageDisplay.css
 
-### `npm run build`
+  - App.js
+  - index.js
+  - reset.css
+  - dux/
+    - store.js
+    - reducer.js
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Routes
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+- Home => /
+- Profile => /profile
+- Message => /messages
+- CreateRoute => /create-message
+- catchAll => '\*'
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Redux State
 
-### `npm run eject`
+```js
+const initialState = {
+  user: null,
+  messages: []
+};
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## backend
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### dependencies
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- express
+- massive
+- dotenv
+- express-session
+- bcrypt
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### folder structure
 
-## Learn More
+- server/
+  - index.js
+  - controller/
+    - messageController
+    - authController
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### endpoint routes
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+**auth**
 
-### Code Splitting
+- login: => /api/login
+- register: => /api/register
+- userInfo: => /api/user
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+**message**
 
-### Analyzing the Bundle Size
+- getMessages: => /api/messages
+- postMessage: => /api/messages
+- updateMessage: => /api/messages/:id
+- deleteMessage: => /api/messages/:id
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+### database
 
-### Making a Progressive Web App
+- users
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+```sql
+create table usersproj (
+    user_id serial primary key,
+    username varchar(40) not null,
+    password text not null,
+    email text not null
+);
+```
 
-### Advanced Configuration
+- message
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+```sql
+create table message (
+    message_id serial primary key,
+    message text not null,
+    user_id int references usersproj(user_id),
+    time_entered date default now()
+    FOREIGN KEY(user_id) references usersproj(user_id)
+);
+```
 
-### Deployment
+### dotenv
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+```text
+SESSION_SECRET=
+SERVER_PORT=
+CONNECTION_STRING=
+```
